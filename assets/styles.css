@@ -1,0 +1,4 @@
+.brand .name {
+  color: #666;     /* lighter grey */
+  font-weight: 400; /* normal, not bold */
+}
