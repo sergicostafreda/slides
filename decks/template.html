@@ -3,58 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Presentation Template – Hello World</title>
-  <!-- Professional single‑file deck template (HTML+CSS+JS). Copy this file for new decks. -->
+  <title>Presentation Template – Sergi Costafreda</title>
   <style>
     :root{
-      --bg:#0e0f11;          /* background */
-      --panel:#121419;       /* slide panel */
-      --text:#f5f7fb;        /* main text */
-      --muted:#aab0bb;       /* secondary text */
-      --accent:#3b82f6;      /* link/brand colour */
-      --accent-2:#7c3aed;    /* subtle gradient end */
-      --border:rgba(255,255,255,.08);
+      --bg:#0e0f11; --panel:#121419; --text:#f5f7fb; --muted:#aab0bb;
+      --accent:#3b82f6; --accent-2:#7c3aed; --border:rgba(255,255,255,.08);
     }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Cantarell,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height:100%; }
-    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif; background:var(--bg); color:var(--text); overflow:hidden; }
-
-    /* Container */
-    .presentation { position:relative; height:100vh; width:100vw; }
+    .presentation{position:relative;height:100vh;width:100vw}
 
     /* Slides */
-    .slide { display:none; height:100vh; width:100vw; padding:4rem 2rem; 
-             background: radial-gradient(1200px 600px at 50% 20%, rgba(74, 108, 247,.15), transparent 60%),
-                         linear-gradient(135deg, var(--panel) 0%, #0f1220 100%);
-             border-top: 1px solid var(--border);
-             display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
-    .slide.active { display:flex; }
+    .slides{height:100%;width:100%}
+    .slide{
+      display:none; height:100%; width:100%; padding:4rem 2rem;
+      background: radial-gradient(1200px 600px at 50% 20%, rgba(74,108,247,.15), transparent 60%),
+                  linear-gradient(135deg, var(--panel) 0%, #0f1220 100%);
+      border-top:1px solid var(--border);
+      /* flex applies when the slide is shown */
+      display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    }
 
     /* Headings */
-    h1 { font-size:3.4rem; line-height:1.1; font-weight:800; margin-bottom:1rem; letter-spacing:.2px; 
-         background:linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    p.subtitle { font-size:1.125rem; color:var(--muted); max-width:900px; }
+    h1{font-size:3.4rem;line-height:1.1;font-weight:800;margin-bottom:1rem;letter-spacing:.2px;
+       background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
+       -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    p.subtitle{font-size:1.125rem;color:var(--muted);max-width:900px}
 
-    /* Brand (optional) */
-    .brand { position:fixed; top:1.5rem; left:1.5rem; color:var(--muted); font-weight:600; letter-spacing:.3px; opacity:.9; }
-    .brand b{ color:var(--text); }
+    /* Brand (matches your preference) */
+    .brand{position:fixed;top:1.5rem;left:1.5rem;color:var(--muted);font-weight:600;letter-spacing:.3px;opacity:.9}
+    .brand .name{color:#666;font-weight:400}
 
-    /* Navigation */
-    .nav { position:fixed; left:50%; bottom:1.5rem; transform:translateX(-50%); display:flex; gap:.75rem; z-index:1000; }
-    .nav-btn { background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--text); padding:.6rem 1rem; border-radius:10px; cursor:pointer; }
-    .nav-btn:hover { background:rgba(255,255,255,.12); }
-    .slide-number { position:fixed; right:1.5rem; bottom:1.5rem; color:#8a90a0; font-size:.95rem; }
+    /* Nav */
+    .nav{position:fixed;left:50%;bottom:1.5rem;transform:translateX(-50%);display:flex;gap:.5rem;z-index:1000;align-items:center}
+    .nav .nav-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);padding:.5rem .9rem;border-radius:10px;cursor:pointer}
+    .nav .nav-btn:hover{background:rgba(255,255,255,.12)}
+    .dots{display:flex;gap:.35rem;align-items:center}
+    .dot{width:.45rem;height:.45rem;border-radius:999px;background:rgba(255,255,255,.25);border:1px solid var(--border)}
+    .slide-number{position:fixed;right:1.5rem;bottom:1.5rem;color:#8a90a0;font-size:.95rem}
 
-    /* Animation */
-    @keyframes fadeIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:translateY(0);} }
-    .fade-in { animation: fadeIn .45s ease-out; }
+    /* Pure-CSS “controller” */
+    input[type=radio]{position:fixed;opacity:0;pointer-events:none}
 
-    /* Print/PDF: show all slides, one per page */
-    @media print {
-      body{ overflow:visible; }
-      .nav, .slide-number, .brand{ display:none !important; }
-      .slide{ display:block !important; height:auto; min-height:100vh; break-after:page; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    /* Map radios to slides — add/remove rules as you add slides */
+    #r1:checked ~ .slides #s1{display:flex}
+    #r2:checked ~ .slides #s2{display:flex}
+    #r3:checked ~ .slides #s3{display:flex}
+    #r4:checked ~ .slides #s4{display:flex}
+    #r5:checked ~ .slides #s5{display:flex}
+
+    /* Prev/Next visibility per slide (so labels point to correct radios) */
+    .prev,.next{display:none}
+    #r1:checked ~ .nav .next1,
+    #r2:checked ~ .nav .prev2, #r2:checked ~ .nav .next2,
+    #r3:checked ~ .nav .prev3, #r3:checked ~ .nav .next3,
+    #r4:checked ~ .nav .prev4, #r4:checked ~ .nav .next4,
+    #r5:checked ~ .nav .prev5 { display:inline-block }
+
+    /* Active dot */
+    #r1:checked ~ .nav .d1,
+    #r2:checked ~ .nav .d2,
+    #r3:checked ~ .nav .d3,
+    #r4:checked ~ .nav .d4,
+    #r5:checked ~ .nav .d5 { background:#fff }
+
+    /* Counter text */
+    #r1:checked ~ .slide-number::after{content:"1 / 5"}
+    #r2:checked ~ .slide-number::after{content:"2 / 5"}
+    #r3:checked ~ .slide-number::after{content:"3 / 5"}
+    #r4:checked ~ .slide-number::after{content:"4 / 5"}
+    #r5:checked ~ .slide-number::after{content:"5 / 5"}
+
+    /* Print/PDF: show all slides sequentially */
+    @media print{
+      body{overflow:visible}
+      .nav,.slide-number,.brand{display:none !important}
+      .slide{display:block !important;height:auto;min-height:100vh;break-after:page;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     }
   </style>
 </head>
@@ -63,54 +89,70 @@
     <div class="brand" aria-hidden="true">
       <span class="name">Sergi Costafreda</span> · Presentations
     </div>
-    <!-- Slide 1 (Title) -->
-    <section class="slide active" role="group" aria-roledescription="slide" aria-label="Title – Hello world">
-      <h1>Hello, world</h1>
-      <p class="subtitle">A minimal, professional HTML slide template you can duplicate for every talk.</p>
-    </section>
 
-    <!-- Slide 2 (Congrats) -->
-    <section class="slide" role="group" aria-roledescription="slide" aria-label="Confirmation – Way to go">
-      <h1>Way to go!</h1>
-      <p class="subtitle">Use the ← and → keys, the buttons below, or swipe on touch devices to navigate. Print to PDF when you need a shareable file.</p>
-    </section>
+    <!-- Radios (one per slide). Checked = current slide -->
+    <input type="radio" name="r" id="r1" checked>
+    <input type="radio" name="r" id="r2">
+    <input type="radio" name="r" id="r3">
+    <input type="radio" name="r" id="r4">
+    <input type="radio" name="r" id="r5">
+
+    <div class="slides">
+      <!-- SLIDE 1 -->
+      <section class="slide" id="s1" role="group" aria-roledescription="slide" aria-label="Title">
+        <h1>Hello, world</h1>
+        <p class="subtitle">A minimal, professional HTML slide template – no JS required.</p>
+      </section>
+
+      <!-- SLIDE 2 -->
+      <section class="slide" id="s2" role="group" aria-roledescription="slide" aria-label="Slide 2">
+        <h2>Slide 2</h2>
+        <p>Example content.</p>
+      </section>
+
+      <!-- SLIDE 3 -->
+      <section class="slide" id="s3" role="group" aria-roledescription="slide" aria-label="Slide 3">
+        <h2>Slide 3</h2>
+        <p>More content.</p>
+      </section>
+
+      <!-- SLIDE 4 -->
+      <section class="slide" id="s4" role="group" aria-roledescription="slide" aria-label="Slide 4">
+        <h2>Slide 4</h2>
+        <p>Keep building.</p>
+      </section>
+
+      <!-- SLIDE 5 -->
+      <section class="slide" id="s5" role="group" aria-roledescription="slide" aria-label="Slide 5">
+        <h2>Slide 5</h2>
+        <p>Finish strong.</p>
+      </section>
+    </div>
+
+    <!-- Pure-CSS Prev/Next + dots + static counter text -->
+    <div class="nav" aria-label="Slide navigation">
+      <!-- prev labels -->
+      <label for="r1" class="nav-btn prev prev2">← Previous</label>
+      <label for="r2" class="nav-btn prev prev3">← Previous</label>
+      <label for="r3" class="nav-btn prev prev4">← Previous</label>
+      <label for="r4" class="nav-btn prev prev5">← Previous</label>
+
+      <div class="dots" aria-hidden="true">
+        <label for="r1" class="dot d1" title="1"></label>
+        <label for="r2" class="dot d2" title="2"></label>
+        <label for="r3" class="dot d3" title="3"></label>
+        <label for="r4" class="dot d4" title="4"></label>
+        <label for="r5" class="dot d5" title="5"></label>
+      </div>
+
+      <!-- next labels -->
+      <label for="r2" class="nav-btn next next1">Next →</label>
+      <label for="r3" class="nav-btn next next2">Next →</label>
+      <label for="r4" class="nav-btn next next3">Next →</label>
+      <label for="r5" class="nav-btn next next4">Next →</label>
+    </div>
+
+    <div class="slide-number" aria-live="polite"></div>
   </div>
-
-  <div class="nav" aria-label="Slide navigation">
-    <button class="nav-btn" onclick="prevSlide()" aria-label="Previous slide">← Previous</button>
-    <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">Next →</button>
-  </div>
-  <div class="slide-number" id="counter" aria-live="polite">1 / 2</div>
-
-  <script>
-    let current = 0;
-    const slides = document.querySelectorAll('.slide');
-    const total = slides.length;
-    const counter = document.getElementById('counter');
-
-    function show(n){
-      slides[current].classList.remove('active');
-      current = (n + total) % total; // wrap around
-      slides[current].classList.add('active','fade-in');
-      counter.textContent = `${current+1} / ${total}`;
-    }
-    function nextSlide(){ show(current + 1); }
-    function prevSlide(){ show(current - 1); }
-
-    // keyboard navigation
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowRight') nextSlide();
-      if(e.key === 'ArrowLeft')  prevSlide();
-    });
-
-    // touch support
-    let startX = 0;
-    document.addEventListener('touchstart', e => startX = e.changedTouches[0].screenX);
-    document.addEventListener('touchend',   e => {
-      const dx = e.changedTouches[0].screenX - startX;
-      if (dx < -50) nextSlide();
-      if (dx >  50) prevSlide();
-    });
-  </script>
 </body>
 </html>
